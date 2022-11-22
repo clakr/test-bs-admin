@@ -1,0 +1,19 @@
+:local() {
+
+  main {
+    flex: 1;
+  }
+
+  table>tbody>tr>td {
+    vertical-align: middle;
+
+    &:nth-child(2) {
+      text-align: center;
+
+      img {
+        max-height: 100px;
+      }
+    }
+  }
+
+}
