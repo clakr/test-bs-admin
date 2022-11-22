@@ -4,6 +4,7 @@ import React, {
 import { Container, Table, Button } from 'reactstrap';
 // eslint-disable-next-line import/no-cycle
 import AddButton from '../../components/AddButton';
+// eslint-disable-next-line import/no-cycle
 import TableRows from '../../components/TableRows';
 
 const UsersContext = createContext();
@@ -67,12 +68,15 @@ function Index() {
               <th>Email</th>
               <th>First Name</th>
               <th>Last Name</th>
-              <th> </th>
+              <th>Actions</th>
             </tr>
           </thead>
 
           <tbody>
-            {users && users.map((user) => <TableRows user={user} key={user.id} />).slice(0, 10)}
+            {users
+              && users
+                .sort((a, b) => a.id - b.id)
+                .map((user) => <TableRows user={user} key={user.id} />)}
           </tbody>
 
           <tfoot>

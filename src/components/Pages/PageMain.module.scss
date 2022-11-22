@@ -4,16 +4,22 @@
     flex: 1;
   }
 
-  table>tbody>tr>td {
-    vertical-align: middle;
-
-    &:nth-child(2) {
+  table {
+    thead>tr>th {
       text-align: center;
+    }
 
-      img {
-        max-height: 100px;
+    tbody>tr>td{
+      text-align: center;
+      vertical-align: middle;
+
+      &:nth-child(2) {
+        text-align: center;
+  
+        img {
+          max-height: 100px;
+        }
       }
     }
   }
-
 }

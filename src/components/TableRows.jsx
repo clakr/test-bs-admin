@@ -1,18 +1,16 @@
-import React, { useState } from 'react';
-import {
-  Dropdown, DropdownItem, DropdownMenu, DropdownToggle,
-} from 'reactstrap';
+import React from 'react';
+import { ButtonGroup } from 'reactstrap';
 import PropTypes from 'prop-types';
+// eslint-disable-next-line import/no-cycle
+import EditButton from './EditButton';
+// eslint-disable-next-line import/no-cycle
+import DeleteButton from './DeleteButton';
 
 function TableRows({
   user: {
     id, avatar, email, first_name: firstName, last_name: lastName,
   },
 }) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggle = () => setIsOpen((prevState) => !prevState);
-
   return (
     <tr>
       <td>{id}</td>
@@ -23,15 +21,10 @@ function TableRows({
       <td>{firstName}</td>
       <td>{lastName}</td>
       <td>
-        <Dropdown isOpen={isOpen} toggle={toggle}>
-          <DropdownToggle caret className="btn btn-outline-secondary btn-sm" tag="button">
-            Actions
-          </DropdownToggle>
-          <DropdownMenu end className="mt-2">
-            <DropdownItem>Edit User</DropdownItem>
-            <DropdownItem>Delete User</DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
+        <ButtonGroup>
+          <EditButton userId={id} />
+          <DeleteButton userId={id} />
+        </ButtonGroup>
       </td>
     </tr>
   );

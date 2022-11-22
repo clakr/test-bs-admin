@@ -12,47 +12,56 @@ import {
   ModalHeader,
   Row,
 } from 'reactstrap';
+import PropTypes from 'prop-types';
 // eslint-disable-next-line import/no-cycle
 import { useUsers } from '../views/users';
 
-function AddButton() {
+function EditButton({ userId }) {
+  const { users, setUsers } = useUsers();
+
+  const editUser = users.find(({ id }) => userId === id);
+
   const [form, setForm] = useState({
-    email: '',
-    first_name: '',
-    last_name: '',
+    id: editUser.id,
+    email: editUser.email,
+    avatar: editUser.avatar,
+    first_name: editUser.first_name,
+    last_name: editUser.last_name,
   });
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen((prevState) => !prevState);
 
-  const { users, setUsers } = useUsers();
-
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    fetch('https://reqres.in/api/users', {
-      method: 'POST',
+    fetch(`https://reqres.in/api/users/${userId}`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        id: form.id,
         email: form.email,
+        avatar: form.avatar,
         first_name: form.first_name.charAt(0).toUpperCase() + form.first_name.slice(1),
         last_name: form.last_name.charAt(0).toUpperCase() + form.last_name.slice(1),
       }),
     })
       .then((res) => res.json())
       .then(({
-        id, email, first_name: firstName, last_name: lastName,
+        id, email, avatar, first_name: firstName, last_name: lastName,
       }) => {
+        const filtered = users.filter(({ id: filteredId }) => id !== filteredId);
         setUsers([
           {
             id,
             email,
             first_name: firstName,
             last_name: lastName,
+            avatar,
           },
-          ...users,
+          ...filtered,
         ]);
       });
 
@@ -61,11 +70,11 @@ function AddButton() {
 
   return (
     <>
-      <Button color="primary" onClick={toggle}>
-        + Add User
+      <Button onClick={toggle} color="warning">
+        Edit User
       </Button>
       <Modal isOpen={isOpen} toggle={toggle}>
-        <ModalHeader toggle={toggle}>Create User</ModalHeader>
+        <ModalHeader toggle={toggle}>Edit User</ModalHeader>
         <ModalBody>
           <Form id="form" onSubmit={handleSubmit}>
             <Row>
@@ -122,4 +131,12 @@ function AddButton() {
   );
 }
 
-export default AddButton;
+EditButton.defaultProps = {
+  userId: 0,
+};
+
+EditButton.propTypes = {
+  userId: PropTypes.number,
+};
+
+export default EditButton;
