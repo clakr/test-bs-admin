@@ -1,30 +1,32 @@
-import React, {
-  createContext, useContext, useEffect, useMemo, useState,
-} from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Link, Outlet } from 'react-router-dom';
 import { Container, Table, Button } from 'reactstrap';
-// eslint-disable-next-line import/no-cycle
-import AddButton from '../../components/AddButton';
-// eslint-disable-next-line import/no-cycle
+import { UsersContext } from '../../utils/useUsers';
 import TableRows from '../../components/TableRows';
 
-const UsersContext = createContext();
-
-export const useUsers = () => useContext(UsersContext);
-
 function Index() {
-  const [users, setUsers] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     let isSubscribed = true;
 
     const fetchData = async () => {
-      const res = await fetch('https://reqres.in/api/users');
-      const { data } = await res.json();
+      await Promise.all([
+        fetch('https://reqres.in/api/users?page=1'),
+        fetch('https://reqres.in/api/users?page=2'),
+      ]).then((responses) => {
+        Promise.all(responses.map((res) => res.json())).then((dataJSON) => {
+          const responseData = [];
 
-      if (isSubscribed) {
-        setUsers(data);
-      }
+          dataJSON.forEach(({ data }) => {
+            responseData.push(data);
+          });
+
+          if (isSubscribed) {
+            setUsers(responseData.flat());
+          }
+        });
+      });
     };
 
     fetchData().catch((err) => {
@@ -36,58 +38,40 @@ function Index() {
     };
   }, []);
 
-  const handleLoadMore = async () => {
-    try {
-      setIsLoading(true);
-      const res = await fetch('https://reqres.in/api/users?page=2&delay=1');
-      const { data } = await res.json();
+  const value = useMemo(() => ({ users, setUsers }), [users]);
 
-      setIsLoading(false);
-      setUsers([...users, ...data]);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const rowLength = users ? Object.keys(users[0]).length + 1 : 0;
-
-  const value = useMemo(() => ({ users, setUsers }), [users, setUsers]);
+  if (users) {
+    console.log('users', users);
+  }
 
   return (
     <UsersContext.Provider value={value}>
+      <Outlet />
       <Container>
-        <div className="mt-3 text-right">
-          <AddButton />
+        <div className="mt-3 text-end">
+          <Button tag={Link} to="/users/create">
+            Add User
+          </Button>
         </div>
 
-        <Table className="table-hover mt-3 my-5">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Avatar</th>
-              <th>Email</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
+        {users.length > 0 && (
+          <Table className="table-hover mt-3 my-5">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Avatar</th>
+                <th>Email</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
 
-          <tbody>
-            {users
-              && users
-                .sort((a, b) => a.id - b.id)
-                .map((user) => <TableRows user={user} key={user.id} />)}
-          </tbody>
-
-          <tfoot>
-            {isLoading && <tr colSpan={rowLength}>loading...</tr>}
-            <tr>
-              <td colSpan={rowLength} className="text-center">
-                <Button onClick={handleLoadMore}>Load More</Button>
-              </td>
-            </tr>
-          </tfoot>
-        </Table>
+            <tbody>
+              {users.map((user) => <TableRows user={user} key={user.id} />).slice(0, 10)}
+            </tbody>
+          </Table>
+        )}
       </Container>
     </UsersContext.Provider>
   );

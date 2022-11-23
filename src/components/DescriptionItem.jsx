@@ -1,4 +1,4 @@
-import { string } from 'prop-types';
+import { number, oneOfType, string } from 'prop-types';
 import React from 'react';
 import { Col } from 'reactstrap';
 
@@ -22,7 +22,7 @@ DescriptionItem.defaultProps = {
 
 DescriptionItem.propTypes = {
   term: string,
-  details: string,
+  details: oneOfType([string, number]),
 };
 
 export default DescriptionItem;

@@ -5,7 +5,11 @@ import './PageMain.module.scss';
 function PageMain(props) {
   const { children } = props;
 
-  return <main role="main">{children}</main>;
+  return (
+    <main role="main" className="d-flex">
+      {children}
+    </main>
+  );
 }
 
 PageMain.propTypes = {

@@ -3,15 +3,12 @@ import { Container } from 'reactstrap';
 
 function Index() {
   return (
-    <Container>
-      {/* <Jumbotron className="mt-5">
-        <h1 className="display-4">&#123;your name&#125;</h1>
-        <address>
-          <a href="mailto:email@address.com">email@address.com</a>
-          <br />
-          <a href="tel:+635552368">(+63) 123-1234-1234</a>
-        </address>
-      </Jumbotron> */}
+    <Container className="d-flex justify-content-center align-items-center flex-column">
+      <h1>Clark Kenneth C. Tolosa</h1>
+      <h3>clarktolosa@gmail.com</h3>
+      <a href="https://github.com/clakr/test-bs-admin" target="_blank" rel="noreferrer">
+        https://github.com/clakr/test-bs-admin
+      </a>
     </Container>
   );
 }

@@ -21,32 +21,6 @@ function PageNav() {
               Users
             </NavLink>
           </NavItem>
-          {/* <NavItem>
-            <NavLink tag={Link} to="/features">
-              Features
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink tag={Link} to="/pricing">
-              Pricing
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink tag={Link} to="/disabled" disabled>
-              Disabled
-            </NavLink>
-          </NavItem>
-          <UncontrolledDropdown nav inNavbar>
-            <DropdownToggle nav caret>
-              Options
-            </DropdownToggle>
-            <DropdownMenu>
-              <DropdownItem>Option 1</DropdownItem>
-              <DropdownItem>Option 2</DropdownItem>
-              <DropdownItem divider />
-              <DropdownItem>Reset</DropdownItem>
-            </DropdownMenu>
-          </UncontrolledDropdown> */}
         </Nav>
       </Collapse>
     </Navbar>

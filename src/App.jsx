@@ -1,22 +1,27 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Users from './views/users';
 import Home from './views/home';
 import { Page } from './components/Pages';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import AddUser from './components/Modals/AddUser';
+import EditUser from './components/Modals/EditUser';
+import DeleteUser from './components/Modals/DeleteUser';
 
 function App() {
   return (
     <div className="App">
-      <Router>
-        <Routes>
-          <Route element={<Page />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/users" element={<Users />} />
-            <Route path="*">404</Route>
+      <Routes>
+        <Route element={<Page />}>
+          <Route path="/" element={<Home />} />
+          <Route path="users" element={<Users />}>
+            <Route path="create" element={<AddUser />} />
+            <Route path=":id/edit" element={<EditUser />} />
+            <Route path=":id/delete" element={<DeleteUser />} />
           </Route>
-        </Routes>
-      </Router>
+          <Route path="*">404</Route>
+        </Route>
+      </Routes>
     </div>
   );
 }

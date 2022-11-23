@@ -1,10 +1,9 @@
 import React from 'react';
-import { ButtonGroup } from 'reactstrap';
-import PropTypes from 'prop-types';
-// eslint-disable-next-line import/no-cycle
-import EditButton from './EditButton';
-// eslint-disable-next-line import/no-cycle
-import DeleteButton from './DeleteButton';
+import { Button, ButtonGroup } from 'reactstrap';
+import {
+  number, oneOfType, shape, string,
+} from 'prop-types';
+import { Link } from 'react-router-dom';
 
 function TableRows({
   user: {
@@ -22,8 +21,12 @@ function TableRows({
       <td>{lastName}</td>
       <td>
         <ButtonGroup>
-          <EditButton userId={id} />
-          <DeleteButton userId={id} />
+          <Button tag={Link} to={`/users/${id}/edit`} color="warning">
+            Edit User
+          </Button>
+          <Button tag={Link} to={`/users/${id}/delete`} color="danger">
+            Delete User
+          </Button>
         </ButtonGroup>
       </td>
     </tr>
@@ -41,12 +44,12 @@ TableRows.defaultProps = {
 };
 
 TableRows.propTypes = {
-  user: PropTypes.shape({
-    id: PropTypes.number,
-    avatar: PropTypes.string,
-    email: PropTypes.string,
-    first_name: PropTypes.string,
-    last_name: PropTypes.string,
+  user: shape({
+    id: oneOfType([number, string]),
+    avatar: string,
+    email: string,
+    first_name: string,
+    last_name: string,
   }),
 };
 
